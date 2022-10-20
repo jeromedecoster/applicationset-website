@@ -1,0 +1,14 @@
+.ignore
+node_modules
+package-lock.json
+.env*
+.terraform*
+terraform.plan
+terraform.tfvars
+tfplan
+*.tfstate
+*.tfstate.*
+*.kate-swp*
+
+rhino.*
+!test/rhino.*

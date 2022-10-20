@@ -1,0 +1,75 @@
+<html>
+    <head>
+        <title>Upload & Convert</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+        <style>
+        body {
+            margin-bottom: 4em;
+            background-color: #fcfcfc;
+        }
+
+        h2 {
+            margin-bottom: .8em;
+
+            /* version 0.0.2 */
+            /*
+            font-size: 1.8em;
+            font-style: italic;
+            color: red;
+            */
+
+            /* version 0.0.3 */
+            /*
+            font-size: 2.4em;
+            font-weight: 800;
+            color: rgb(230, 150, 150);
+            */
+        }
+
+        .box {
+            padding: 2em;
+            margin-top: 2em;
+            margin-bottom: 2em;
+            background-color: #fff;
+        }
+
+        .shadow {
+            box-shadow: 0 .5rem .7rem rgba(0, 0, 0, .08) !important;
+        }
+
+        input[type='checkbox'] {
+            margin-left: 0;
+        }
+
+        img {
+            max-width: 100%;
+            border: 8px solid #fff;
+            box-shadow: 0px 6px 10px -2px #999;
+            display: block;
+            margin: 0 auto 2em auto;
+        }
+    </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="box border shadow">
+            <h2>Upload & Convert</h2>
+            <form method="post" enctype="multipart/form-data" action="/upload">
+                <div class="form-group row">
+                    <div class="col-sm-8 col-lg-9">
+                        <input type="file" name="file" id="file" class="form-control-file" accept=".jpg,.png,.webp" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-8 col-lg-9">
+                        <button type="submit" class="btn btn-primary">Send</button>
+                    </div>
+                </div>
+            </form>
+            </div>
+            {% for item in files %}
+            <img src="{{ item }}" />
+            {% endfor %}
+        </div>
+    </body>  
+</html>

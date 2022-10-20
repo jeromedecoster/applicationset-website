@@ -1,0 +1,57 @@
+version: "3"
+
+services:
+    convert:
+        build:
+            context: ../applicationset-convert/convert
+            dockerfile: Dockerfile.dev
+        # define volume to enable livereload
+        volumes:
+            - "../applicationset-convert/convert:/app"
+        # port variables are not received from the env_file below
+        # but defined by `docker-compose --env-file <file> up`
+        ports:
+            - "${CONVERT_PORT}:${CONVERT_PORT}"
+        # define environment variables in the built image
+        env_file:
+            # - ../applicationset-convert/.env
+            - .env
+        environment:
+            NODE_ENV: "development"
+            DEBUG: "convert"
+
+    storage:
+        build:
+            context: ../applicationset-storage/storage
+            dockerfile: Dockerfile.dev
+        # define volume to enable livereload
+        volumes:
+            - "../applicationset-storage/storage:/app"
+        # port variables are not received from the env_file below
+        # but defined by `docker-compose --env-file <file> up`
+        ports:
+            - "${STORAGE_PORT}:${STORAGE_PORT}"
+        # define environment variables in the built image
+        env_file:
+            # - ../applicationset-storage/.env
+            - .env
+        environment:
+            NODE_ENV: "development"
+            DEBUG: "storage"
+
+    website:
+        build:
+            context: ./website
+            dockerfile: Dockerfile.dev
+        volumes:
+            - "./website:/app"
+        ports:
+            - "${WEBSITE_PORT}:${WEBSITE_PORT}"
+        env_file:
+            - .env
+        environment:
+            DOCKER_COMPOSE: "true"
+            NODE_ENV: "development"
+            CONVERT_HOST: "convert"
+            STORAGE_HOST: "storage"
+            DEBUG: website

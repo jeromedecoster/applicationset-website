@@ -1,0 +1,51 @@
+version: "3"
+
+services:
+    convert:
+        image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/as-convert:latest
+        # port variables are not received from the env_file below
+        # but defined by `docker-compose --env-file <file> up`
+        ports:
+            - "${CONVERT_PORT}:${CONVERT_PORT}"
+        # define environment variables in the built image
+        env_file:
+            - .env
+        # environment:
+            # DEBUG: "convert"
+        networks:
+            - backend
+
+    storage:
+        image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/as-storage:latest
+        # port variables are not received from the env_file below
+        # but defined by `docker-compose --env-file <file> up`
+        ports:
+            - "${STORAGE_PORT}:${STORAGE_PORT}"
+        # define environment variables in the built image
+        env_file:
+            - .env
+        # environment:
+            # DEBUG: "storage"
+        networks:
+            - backend
+
+    website:
+        image: ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/as-website:latest
+        ports:
+            - "${WEBSITE_PORT}:${WEBSITE_PORT}"
+        env_file:
+            - .env
+        environment:
+            DOCKER_COMPOSE: "true"
+            CONVERT_HOST: "convert"
+            STORAGE_HOST: "storage"
+            # DEBUG: website
+        networks:
+            - backend
+        depends_on:
+            - convert
+            - storage
+
+
+networks:
+  backend: {}

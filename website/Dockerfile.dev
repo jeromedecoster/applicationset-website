@@ -1,0 +1,11 @@
+FROM node:18.10-slim AS build
+WORKDIR /app
+ADD package.json .
+RUN npm install
+
+FROM node:18.10-slim
+WORKDIR /app
+COPY --from=build /app .
+ADD . .
+ENV DEBUG=website
+CMD ["npx", "nodemon", "index.js"]
